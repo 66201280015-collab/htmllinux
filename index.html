@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<title>วิทยาลัยเทคนิคตรัง (Trang Technical College)</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: #e9e9e9;
+}
+
+/* --- ปรับแก้ส่วน Header ใหม่ --- */
+header {
+  background-color: #ffffff; /* เปลี่ยนพื้นหลังเป็นสีขาว */
+  padding: 15px 50px;
+  display: flex;             /* ใช้ Flexbox จัดวาง */
+  align-items: center;       /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+  border-bottom: 4px solid #004d99; /* เพิ่มเส้นขอบล่างสีน้ำเงินให้ดูเป็นทางการ */
+}
+
+.logo-header {
+  width: 100px;              /* ขนาดโลโก้ */
+  height: auto;
+  margin-right: 25px;        /* เว้นระยะห่างจากตัวอักษรทางขวา */
+}
+
+.header-text {
+  text-align: left;          /* จัดตัวอักษรชิดซ้าย */
+  color: #004d99;            /* เปลี่ยนสีตัวอักษรเป็นสีน้ำเงินเพื่อให้ตัดกับพื้นหลังขาว */
+}
+
+.header-text h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.header-text p {
+  margin: 5px 0 0 0;
+  font-size: 16px;
+  color: #555;
+}
+/* --------------------------- */
+
+nav {
+  float: left;
+  width: 30%;
+  background: #ccc;
+  padding: 20px;
+  min-height: 550px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  margin-bottom: 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 18px;
+  display: block;
+  padding: 12px;
+  background-color: #ddd;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: #004d99;
+  color: white;
+}
+
+article {
+  float: left;
+  padding: 20px 40px;
+  width: 70%;
+  background-color: #f1f1f1;
+  min-height: 550px;
+}
+
+section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+footer {
+  background-color: #333;
+  padding: 15px;
+  text-align: center;
+  color: white;
+}
+
+.director-box {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.director-img {
+  float: left;
+  width: 120px;
+  height: 150px;
+  background-color: #ddd;
+  margin-right: 20px;
+  border-radius: 5px;
+  object-fit: cover;
+  border: 2px solid #004d99;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 8% auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 550px;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column; /* มือถือให้เรียงต่อกันลงมา */
+    text-align: center;
+    padding: 20px;
+  }
+  .logo-header {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .header-text {
+    text-align: center;
+  }
+  nav, article {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="ตราวทตรัง.png" alt="โลโก้วิทยาลัยเทคนิคตรัง" class="logo-header">
+  
+  <div class="header-text">
+    <h2>วิทยาลัยเทคนิคตรัง</h2>
+    <p>Trang Technical College</p>
+  </div>
+</header>
+
+<section>
+  <nav>
+    <ul>
+      <li><a href="#info">รายละเอียดและประวัติ</a></li>
+      <li><a href="#director">ผู้อำนวยการ</a></li>
+      <li><a href="javascript:void(0)" onclick="openModal('mapModal')">📍 แผนที่วิทยาลัย</a></li>
+      <li><a href="javascript:void(0)" onclick="openModal('contactModal')">📞 ช่องทางติดต่อ</a></li>
+    </ul>
+  </nav>
+  
+  <article>
+    <h1 id="info">รายละเอียดวิทยาลัยเทคนิคตรัง</h1>
+    <p>วิทยาลัยเทคนิคตรัง สถาบันการอาชีวศึกษาภาคใต้ 2 มุ่งเน้นผลิตกำลังคนที่มีคุณภาพและทักษะวิชาชีพชั้นสูง</p>
+    
+    <h2 style="color: #004d99;">ประวัติโดยย่อ</h2>
+    <p>วิทยาลัยเทคนิคตรัง เริ่มต้นจากการรวมโรงเรียนการช่างตรังและโรงเรียนอาชีวศึกษาตรังเข้าด้วยกันในปี พ.ศ. 2521 และยกฐานะเป็นวิทยาลัยเทคนิคตรังในปี พ.ศ. 2523</p>
+    
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+    <h1 id="director">ผู้อำนวยการสถานศึกษา</h1>
+    <div class="director-box">
+      <img src="https://via.placeholder.com/120x150?text=Director" alt="รูปผู้อำนวยการ" class="director-img">
+      <h3 style="margin: 0; color: #004d99;">ดร.กษิดิฏฐ์ คำศรี</h3>
+      <p><b>ผู้อำนวยการวิทยาลัยเทคนิคตรัง</b></p>
+      <p style="color: #666; font-style: italic;">"มุ่งมั่นพัฒนาวิชาชีพ สานต่อนโยบายอาชีวศึกษาเพื่อสังคม"</p>
+      <div style="clear: both;"></div>
+    </div>
+  </article>
+</section>
+
+<footer>
+  <p>Copyright © 2026 วิทยาลัยเทคนิคตรัง | Trang Technical College</p>
+</footer>
+
+<div id="mapModal" class="modal">
+  <div class="modal-content" style="text-align: center;">
+    <span class="close" onclick="closeModal('mapModal')">&times;</span>
+    <h2 style="color: #004d99;">แผนที่วิทยาลัย</h2>
+    <img src="https://via.placeholder.com/500x350?text=Map+Loading..." alt="แผนที่" style="width:100%; border-radius: 8px;">
+    <p style="margin-top: 15px;">ถ.ตรัง-ปะเหลียน ต.บ้านควน อ.เมือง จ.ตรัง</p>
+  </div>
+</div>
+
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('contactModal')">&times;</span>
+    <h2 style="text-align: center; color: #004d99;">ข้อมูลการติดต่อ</h2>
+    <p><strong>🏢 ที่ตั้ง:</strong> เลขที่ 96 ถ.ตรัง-ปะเหลียน ต.บ้านควน อ.เมือง จ.ตรัง 92000</p>
+    <p><strong>📞 เบอร์โทร:</strong> 075 501 070</p>
+    <p><strong>📧 อีเมล:</strong> info@technictrang.ac.th</p>
+  </div>
+</div>
+
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).style.display = "block";
+  }
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target.className === 'modal') {
+      event.target.style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>
