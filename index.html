@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<title>วิทยาลัยเทคนิคตรัง (Trang Technical College)</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+  margin: 0;
+  background-color: #f4f7f6;
+}
+
+/* Header */
+header {
+  background-color: #ffffff;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  border-bottom: 4px solid #004d99;
+}
+
+.logo-header { width: 90px; height: auto; margin-right: 20px; }
+.header-text h2 { margin: 0; color: #004d99; font-size: 26px; }
+.header-text p { margin: 2px 0 0 0; color: #666; font-size: 14px; }
+
+/* Layout */
+section { display: flex; min-height: 80vh; }
+
+/* Menu ด้านข้าง */
+nav { width: 25%; background: #e0e0e0; padding: 30px 15px; }
+nav ul { list-style-type: none; padding: 0; }
+nav ul li { margin-bottom: 12px; }
+nav ul li a {
+  text-decoration: none; color: #333; font-weight: bold; display: block;
+  padding: 15px; background-color: #f9f9f9; border-radius: 8px;
+  transition: 0.3s; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+nav ul li a:hover, nav ul li a.active { background-color: #004d99; color: white; }
+
+/* พื้นที่แสดงเนื้อหา */
+article { width: 75%; padding: 40px; background-color: #fff; }
+
+/* ซ่อนเนื้อหาไว้ก่อน */
+.content-section { display: none; }
+.content-section.active { display: block; animation: fadeIn 0.5s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* สไตล์หน้าแรก */
+.poster-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px; margin-bottom: 40px;
+}
+.poster-item { border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.poster-item img { width: 100%; height: auto; display: block; }
+
+.activity-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
+}
+.activity-item img {
+  width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: block;
+}
+
+/* สไตล์สาขาที่เปิดสอน */
+.category-title {
+  background-color: #004d99; color: white; padding: 10px 20px;
+  border-radius: 8px; margin-top: 30px; margin-bottom: 20px;
+}
+
+.dept-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+}
+
+/* แก้ไขส่วนนี้เพื่อให้รองรับการเป็นลิงก์และมีเอฟเฟกต์ตอนชี้เมาส์ */
+.dept-item {
+  background: #fdfdfd; border: 1px solid #eee; border-radius: 10px;
+  padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center;
+  display: block; 
+  text-decoration: none; 
+  color: inherit; /* ให้สีตัวอักษรเป็นเหมือนเดิม ไม่กลายเป็นสีน้ำเงินของลิงก์ */
+  transition: transform 0.3s, box-shadow 0.3s; /* เพิ่มความนุ่มนวลตอนชี้เมาส์ */
+}
+.dept-item:hover {
+  transform: translateY(-5px); /* ยกกล่องขึ้นนิดหน่อย */
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* เพิ่มเงา */
+}
+
+.dept-img {
+  width: 100%; height: 180px; object-fit: cover; border-radius: 8px;
+  margin-bottom: 15px; background-color: #e0e0e0;
+}
+.head-info {
+  display: flex; align-items: center; justify-content: center; gap: 15px;
+  margin-top: 15px; text-align: left; padding-top: 15px; border-top: 1px dashed #ccc;
+}
+.head-img {
+  width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); background-color: #d0d0d0;
+}
+.head-info p { margin: 0; font-size: 14px; }
+
+/* สไตล์รูปรวมคณะผู้บริหาร */
+.executives-img {
+  width: 100%; max-width: 800px; border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; margin: 0 auto;
+}
+
+footer { background-color: #333; padding: 15px; text-align: center; color: white; clear: both; }
+
+/* Modal สไตล์เดิม */
+.modal {
+  display: none; position: fixed; z-index: 100; left: 0; top: 0;
+  width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);
+}
+.modal-content {
+  background-color: #fff; margin: 5% auto; padding: 30px;
+  border-radius: 15px; width: 80%; max-width: 600px; position: relative;
+}
+.close { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
+
+/* Ad Modal */
+.ad-modal {
+  display: flex; position: fixed; z-index: 9999; left: 0; top: 0;
+  width: 100%; height: 100%; background-color: rgba(0,0,0,0.85);
+  justify-content: center; align-items: center;
+}
+.ad-content { position: relative; text-align: center; }
+.ad-image { max-width: 90vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: block; }
+.ad-close {
+  position: absolute; top: -20px; right: -20px; background-color: #ff4d4d; color: white;
+  font-size: 24px; font-weight: bold; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center; cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.3s;
+}
+.ad-close:hover { background-color: #cc0000; transform: scale(1.1); }
+
+@media (max-width: 800px) {
+  section { flex-direction: column; }
+  nav, article { width: 100%; }
+  .ad-close { top: 10px; right: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div id="adModal" class="ad-modal">
+  <div class="ad-content">
+    <span class="ad-close" onclick="closeAd()">&times;</span>
+    <img src="ประกาศ.jpg" alt="ประกาศโฆษณา" class="ad-image">
+  </div>
+</div>
+
+<header>
+  <img src="ตราวทตรัง.png" alt="Logo" class="logo-header">
+  <div class="header-text">
+    <h2>วิทยาลัยเทคนิคตรัง</h2>
+    <p>Trang Technical College</p>
+  </div>
+</header>
+
+<section>
+  <nav>
+    <ul>
+      <li><a onclick="showSection('home', this)" id="defaultOpen" class="tablinks active">🏠 หน้าแรก (ข่าวสาร & กิจกรรม)</a></li>
+      <li><a onclick="showSection('history', this)" class="tablinks">📜 รายละเอียดและประวัติ</a></li>
+      <li><a onclick="showSection('departments', this)" class="tablinks">🎓 สาขาที่เปิดสอน</a></li>
+      <li><a onclick="showSection('executives', this)" class="tablinks">👤 คณะผู้บริหาร</a></li>
+      <li><a onclick="openModal('mapModal')">📍 แผนที่วิทยาลัย</a></li>
+      <li><a onclick="openModal('contactModal')">📞 ช่องทางติดต่อ</a></li>
+    </ul>
+  </nav>
+  
+  <article>
+    <div id="home" class="content-section active">
+      <h1 style="color: #004d99; border-bottom: 2px solid #004d99; padding-bottom: 10px;">ข่าวประชาสัมพันธ์ </h1>
+      <div class="poster-container">
+        <div class="poster-item"><img src="สไลด์.jpg" alt="Poster 1"></div>
+        <div class="poster-item"><img src="สไลด์2.png" alt="Poster 2"></div>
+      </div>
+
+      <h2 style="color: #004d99; border-bottom: 2px solid #004d99; padding-bottom: 10px;">ภาพกิจกรรมของวิทยาลัย </h2>
+      <div class="activity-container">
+        <div class="activity-item"><img src="กิจกรรม1.jpg" alt="กิจกรรม 1"></div>
+        <div class="activity-item"><img src="กิจกรรม2.jpg" alt="กิจกรรม 2"></div>
+        <div class="activity-item"><img src="กิจกรรม3.jpg" alt="กิจกรรม 3"></div>
+        <div class="activity-item"><img src="กิจกรรม4.jpg" alt="กิจกรรม 4"></div>
+      </div>
+    </div>
+
+    <div id="history" class="content-section">
+      <h1 style="color: #004d99;">ข้อมูลและรายละเอียดวิทยาลัย</h1>
+      <p><b>วิทยาลัยเทคนิคตรัง</b> สังกัดสถาบันการอาชีวศึกษาภาคใต้ 2 สำนักงานคณะกรรมการการอาชีวศึกษา กระทรวงศึกษาธิการ มุ่งเน้นผลิตและพัฒนากำลังคนให้มีคุณภาพ มีทักษะวิชาชีพสอดคล้องกับความต้องการของตลาดแรงงานและการพัฒนาประเทศ</p>
+      
+      <h2 style="color: #004d99;">ปรัชญาและวิสัยทัศน์</h2>
+      <ul>
+        <li><b>ปรัชญา:</b> ทักษะเด่น เน้นคุณธรรม นำวิชาการ ชำนาญวิชาชีพ</li>
+        <li><b>วิสัยทัศน์:</b> เป็นสถานศึกษาที่มุ่งผลิตและพัฒนากำลังคนอาชีวศึกษาให้มีสมรรถนะวิชาชีพ ได้มาตรฐานสากล สอดคล้องกับการพัฒนาเศรษฐกิจและสังคม</li>
+        <li><b>อัตลักษณ์:</b> บริการดี มีจิตอาสา</li>
+      </ul>
+
+      <h2 style="color: #004d99;">ประวัติโดยย่อ</h2>
+      <p>เริ่มต้นจากการรวม <b>"โรงเรียนการช่างตรัง"</b> และ <b>"โรงเรียนอาชีวศึกษาตรัง"</b> เมื่อปี พ.ศ. 2521 และได้รับการยกฐานะเป็น <b>"วิทยาลัยเทคนิคตรัง"</b> ในปี พ.ศ. 2523 ปัจจุบันเปิดสอนในระดับประกาศนียบัตรวิชาชีพ (ปวช.) ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.) และระดับปริญญาตรี (สายเทคโนโลยีหรือสายปฏิบัติการ)</p>
+    </div>
+
+    <div id="departments" class="content-section">
+      <h1 style="color: #004d99; border-bottom: 2px solid #004d99; padding-bottom: 10px;">สาขาที่เปิดสอน</h1>
+      <p>วิทยาลัยเทคนิคตรัง เปิดทำการเรียนการสอนในหลากหลายสาขาวิชา แบ่งออกเป็นหมวดวิชาหลัก ดังนี้</p>
+      
+      <h2 class="category-title">⚙️ ช่างอุตสาหกรรม</h2>
+      <div class="dept-container">
+        
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B8%8A%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C-%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100088113075529/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างยนต์</h3>
+          <img src="ช่างยนต์.jpg" alt="สาขาช่างยนต์" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าช่างยน.jpeg" alt="หัวหน้าสาขาช่างยนต์" class="head-img">
+            <p><strong>นายชนม์สวัสดิ์ อินนุรักษ์</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างยนต์</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/MachineShopTrang/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างกลโรงงาน</h3>
+          <img src="ช่างกล.jpg" alt="สาขากลโรงงาน" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าช่างกล.jpg" alt="หัวหน้าสาขากลโรงงาน" class="head-img">
+            <p><strong>นายนิกร ยิ้มสุด</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างกลโรงงาน</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/ElectricalPowerTTC/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างไฟฟ้ากำลัง</h3>
+          <img src="ช่างไฟ.jpg" alt="สาขาช่างไฟฟ้ากำลัง" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าช่างไฟ.jpg" alt="หัวหน้าสาขาช่างไฟฟ้ากำลัง" class="head-img">
+            <p><strong>นายกฤตนัน น้ำเจ็ด</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างไฟฟ้ากำลัง</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B8%8A%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%B4%E0%B9%80%E0%B8%A5%E0%B9%87%E0%B8%81%E0%B8%97%E0%B8%A3%E0%B8%AD%E0%B8%99%E0%B8%B4%E0%B8%81%E0%B8%AA%E0%B9%8C-%E0%B8%A7%E0%B8%97%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100063914470592/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างอิเล็กทรอนิกส์</h3>
+          <img src="อิเล็ก.jpg" alt="สาขาช่างอิเล็กทรอนิกส์" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าอิเล็ก.jpeg" alt="หัวหน้าสาขาช่างอิเล็กทรอนิกส์" class="head-img">
+            <p><strong>นายธีระพล บุญชัย</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างอิเล็กทรอนิกส์</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%8A%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-61575072600341/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างก่อสร้าง</h3>
+          <img src="ตรา.png" alt="สาขาช่างก่อสร้าง" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าก่อสร้าง.jpg" alt="หัวหน้าสาขาช่างก่อสร้าง" class="head-img">
+            <p><strong>นายจุมพล ตันติบรรพกุล</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างก่อสร้าง</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%80%E0%B9%80%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%82%E0%B8%A2%E0%B8%98%E0%B8%B2-%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-61566820660651/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างโยธา</h3>
+          <img src="โยธา.jpg" alt="สาขาช่างโยธา" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าโยธา.jpg" alt="หัวหน้าสาขาช่างโยธา" class="head-img">
+            <p><strong>นายวันโชค บุญย่อง</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาช่างโยธา</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%AA%E0%B8%96%E0%B8%B2%E0%B8%9B%E0%B8%B1%E0%B8%95%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1-%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100088973515716/?paipv=0&eav=AfZKCDR-FtCn2n6ejvjta_FydVHRPuSSCDrXct0mogbXfWfyYcXu7ZBA5vYygzw7kMQ&_rdr" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาสถาปัตยกรรม</h3>
+          <img src="สถาปัต.jpg" alt="สาขาสถาปัตยกรรม" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าสถาปัต.jpg" alt="หัวหน้าสาขาสถาปัตยกรรม" class="head-img">
+            <p><strong>นางสาวนิศารัตน์ วัฒนกุล</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาสถาปัตยกรรม</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/rubber.technology.trang/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาเทคโนโลยีการยางฯ</h3>
+          <img src="การยาง.jpg" alt="สาขาเทคโนโลยีการยาง" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าการยาง.jpg" alt="หัวหน้าสาขาเทคโนโลยีการยาง" class="head-img">
+            <p><strong>นายสรุศักดิ์ เทพทอง</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาเทคโนโลยีการยางฯ</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/computertechtrang/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาช่างเทคนิคคอมพิวเตอร์</h3>
+          <img src="เทคคอม.jpg" alt="สาขาช่างเทคนิคคอมพิวเตอร์" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าเทคคอม.jpg" alt="หัวหน้าสาขาช่างเทคนิคคอมพิวเตอร์" class="head-img">
+            <p><strong>นายอนุวัฒน์ สุชาโต</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาเทคนิคคอมพิวเตอร์</span></p>
+          </div>
+        </a>
+
+      </div> 
+
+      <h2 class="category-title">💼 พาณิชยกรรม / บริหารธุรกิจ</h2>
+      <div class="dept-container">
+        
+        <a href="https://www.facebook.com/prachasamphanth.ph.nk.wichakar.baychi.wth.trang#" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาการบัญชี</h3>
+          <img src="ตรา.png" alt="สาขาการบัญชี" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าบัญชี.jpg" alt="หัวหน้าสาขาการบัญชี" class="head-img">
+            <p><strong>นางสาวธรวิรินทร์ พวงสอน</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาการบัญชี</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%87%E0%B8%B2%E0%B8%99-%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100064245004048/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาการจัดการสำนักงาน</h3>
+          <img src="การจัดการ.jpg" alt="สาขาการจัดการสำนักงาน" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าการจัดการ.jpg" alt="หัวหน้าสาขาการจัดการสำนักงาน" class="head-img">
+            <p><strong>นางรัตนา เจวรัมย์</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาการจัดการสำนักงาน</span></p>
+          </div>
+        </a>
+
+        <a href="https://rms.technictrang.ac.th/pms_graph.php?p=&people_dep_id=219&mod=&title=%E1%BC%B9%A1%C7%D4%AA%D2%A1%D2%C3%B5%C5%D2%B4%20%E1%C5%D0%E1%BC%B9%A1%C7%D4%AA%D2%A1%D2%C3%A8%D1%B4%A1%D2%C3%E2%C5%A8%D5%CA%B5%D4%A1%CA%EC%E1%C5%D0%AB%D1%BE%BE%C5%D2%C2%E0%AA%B9" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาการตลาด</h3>
+          <img src="ตรา.png" alt="สาขาการตลาด" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าการตลาด.jpg" alt="หัวหน้าสาขาการตลาด" class="head-img">
+            <p><strong>นางณัฏฐิกา พัฒนประชากร</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาการตลาด</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/TTCDBT/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาเทคโนโลยีธุรกิจดิจิทัล</h3>
+          <img src="ธุรกิจ.jpg" alt="สาขาเทคโนโลยีธุรกิจดิจิทัล" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าธุรกิจ.jpeg" alt="หัวหน้าสาขาเทคโนโลยีธุรกิจดิจิทัล" class="head-img">
+            <p><strong>นางอัษฎาพร บัญเมือง</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาธุรกิจดิจิทัล</span></p>
+          </div>
+        </a>
+
+      </div> 
+
+      <h2 class="category-title">✈️ อุตสาหกรรมการท่องเที่ยว</h2>
+      <div class="dept-container">
+        
+        <a href="https://www.facebook.com/tourismttc/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาการท่องเที่ยว</h3>
+          <img src="ท่องเที่ยว.jpg" alt="สาขาการท่องเที่ยว" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าท่องเที่ยว.jpg" alt="หัวหน้าสาขาการท่องเที่ยว" class="head-img">
+            <p><strong>นางจิรภัทร์ อนุกูลพันธ์</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาการท่องเที่ยว</span></p>
+          </div>
+        </a>
+
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%82%E0%B8%A3%E0%B8%87%E0%B9%81%E0%B8%A3%E0%B8%A1%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100093003332810/" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาการโรงแรม</h3>
+          <img src="โรงแรม.jpg" alt="สาขาการโรงแรม" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าโรงแรม.jpeg" alt="หัวหน้าสาขาการโรงแรม" class="head-img">
+            <p><strong>นางสาวอัญชลี เขาพรง</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาการโรงแรม</span></p>
+          </div>
+        </a>
+
+      </div>
+
+      <h2 class="category-title">🍳 คหกรรม</h2>
+      <div class="dept-container">
+        
+        <a href="https://www.facebook.com/p/%E0%B9%81%E0%B8%9C%E0%B8%99%E0%B8%81%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%82%E0%B8%A0%E0%B8%8A%E0%B8%99%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%97%E0%B8%84%E0%B8%99%E0%B8%B4%E0%B8%84%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-100063584980102/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาอาหารและโภชนาการ</h3>
+          <img src="อาหาร.jpg" alt="สาขาอาหารและโภชนาการ" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าอาหาร.jpg" alt="หัวหน้าสาขาอาหารและโภชนาการ" class="head-img">
+            <p><strong>นางยุวรีย์ กรุณามิตร</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาอาหารและโภชนาการ</span></p>
+          </div>
+        </a>
+
+      </div>
+
+      <h2 class="category-title">💻 เทคโนโลยีสารสนเทศ</h2>
+      <div class="dept-container">
+        
+        <a href="https://www.facebook.com/ittechtrang/?locale=th_TH" target="_blank" class="dept-item">
+          <h3 style="color: #004d99; margin-top: 0;">สาขาวิชาเทคโนโลยีสารสนเทศ</h3>
+          <img src="it.jpg" alt="สาขาเทคโนโลยีสารสนเทศ" class="dept-img">
+          <div class="head-info">
+            <img src="หัวหน้าit.jpg" alt="หัวหน้าสาขาเทคโนโลยีสารสนเทศ" class="head-img">
+            <p><strong>นายธีรพงศ์ ชัยพงศ์วัฒนา</strong><br><span style="color: #666;">หัวหน้าแผนกวิชาเทคโนโลยีสารสนเทศ</span></p>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+
+    <div id="executives" class="content-section">
+      <h1 style="color: #004d99;">คณะผู้บริหารสถานศึกษา</h1>
+      <img src="คณะผู้บริหาร.png" alt="คณะผู้บริหาร" class="executives-img">
+    </div>
+  </article>
+</section>
+
+<footer>
+  <p>Copyright © 2026 วิทยาลัยเทคนิคตรัง | Trang Technical College</p>
+</footer>
+
+<div id="mapModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('mapModal')">&times;</span>
+    <h2 style="text-align: center; color: #004d99;">แผนที่วิทยาลัย</h2>
+    <img src="แผนที่.png" alt="Trang Technical College Map" style="width: 100%; border-radius: 10px;">
+    <div style="background-color: #f0f4f8; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: center; color: #004d99;">
+      <strong>หมายเหตุ:</strong> 96 ถ.ตรัง-ปะเหลียน ต.บ้านควน อ.เมือง จ.ตรัง
+    </div>
+  </div>
+</div>
+
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('contactModal')">&times;</span>
+    <h2 style="text-align: center; color: #004d99;">ข้อมูลการติดต่อ</h2>
+    <p><strong>🏢 ที่ตั้ง:</strong> เลขที่ 96 ถ.ตรัง-ปะเหลียน ต.บ้านควน อ.เมือง จ.ตรัง 92000</p>
+    <p><strong>📞 เบอร์โทร:</strong> 075 501 070</p>
+    <p><strong>📧 อีเมล:</strong> info@technictrang.ac.th</p>
+  </div>
+</div>
+
+<script>
+  function closeAd() { document.getElementById('adModal').style.display = 'none'; }
+
+  function showSection(sectionId, element) {
+    var sections = document.getElementsByClassName('content-section');
+    for (var i = 0; i < sections.length; i++) { sections[i].classList.remove('active'); }
+    
+    var tabs = document.getElementsByClassName('tablinks');
+    for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
+    
+    document.getElementById(sectionId).classList.add('active');
+    
+    if(element) { element.classList.add('active'); } 
+    else { document.getElementById('defaultOpen').classList.add('active'); }
+  }
+
+  function openModal(id) { document.getElementById(id).style.display = "block"; }
+  function closeModal(id) { document.getElementById(id).style.display = "none"; }
+  
+  window.onclick = function(event) {
+    if (event.target.className === 'modal') { event.target.style.display = "none"; }
+    if (event.target.className === 'ad-modal') { closeAd(); }
+  }
+</script>
+
+</body>
+</html>
